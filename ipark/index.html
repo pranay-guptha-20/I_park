@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>I-PARK — Smart Parking (Dark Neon)</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- QR & PDF libs -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <div id="app" class="app">
+
+    <!-- Step indicator -->
+    <header class="steps">
+      <div class="step active">Home</div>
+      <div class="step">Login</div>
+      <div class="step">Personal</div>
+      <div class="step">Vehicles</div>
+      <div class="step">Slots</div>
+      <div class="step">Payment</div>
+      <div class="step">Bill</div>
+      <div class="step">Thanks</div>
+    </header>
+
+    <!-- Pages -->
+    <main class="pages">
+
+      <!-- Page 0 — Home -->
+      <section id="page-home" class="page active">
+        <div class="card">
+          <h1 class="brand">I-PARK</h1>
+          <p class="tag">Find · Park · Charge · Go Green</p>
+          <p class="lead">I-Park simplifies urban parking with IoT-based slot detection, real-time availability and integrated EV charging.</p>
+          <div class="actions">
+            <button id="startBtn" class="btn primary">Book a Slot</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 1 — Login/Register -->
+      <section id="page-login" class="page">
+        <div class="card">
+          <h2>Sign In / Register</h2>
+          <input id="authEmail" type="text" placeholder="Email or Mobile" />
+          <input id="authPass" type="password" placeholder="Password" />
+          <div class="row">
+            <button id="registerBtn" class="btn">Register</button>
+            <button id="loginBtn" class="btn primary">Login</button>
+          </div>
+          <p class="muted"><a href="#" id="forgotLink">Forgot password?</a></p>
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn primary" data-next>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 2 — Personal Details -->
+      <section id="page-personal" class="page">
+        <div class="card">
+          <h2>Personal Details</h2>
+          <input id="name" type="text" placeholder="Full name" />
+          <input id="mobile" type="tel" placeholder="Mobile number" />
+          <input id="email" type="email" placeholder="Email" />
+          <div class="row">
+            <label for="numVehicles">Number of vehicles</label>
+            <select id="numVehicles">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn primary" id="toVehiclesBtn" data-next>Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 3 — Vehicle Details -->
+      <section id="page-vehicles" class="page">
+        <div class="card">
+          <h2>Vehicle Details</h2>
+          <div id="vehiclesContainer" class="vehiclesContainer"></div>
+          <p class="muted">Enter vehicle number and type for each vehicle you want to book.</p>
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn primary" data-next id="toSlotsBtn">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 4 — Slot Booking -->
+      <section id="page-slots" class="page">
+        <div class="card">
+          <h2>Choose slots & timing</h2>
+
+          <div class="row">
+            <label>Time of day</label>
+            <select id="timeOfDay">
+              <option value="morning">Morning (6:00 – 12:00)</option>
+              <option value="afternoon">Afternoon (12:00 – 18:00)</option>
+              <option value="night">Night (18:00 – 24:00)</option>
+            </select>
+
+            <label>Duration (hours)</label>
+            <select id="duration">
+              <option value="1">1 hour</option>
+              <option value="2">2 hours</option>
+              <option value="3">3 hours</option>
+            </select>
+          </div>
+
+          <div class="row">
+            <label>Start time</label>
+            <select id="startTime"></select>
+          </div>
+
+          <div class="slotsGrid" id="slotsGrid">
+            <div class="slotCard" data-slot="1">
+              <div class="slotTitle">Slot 1</div>
+              <div class="slotDot available" aria-hidden></div>
+              <div class="slotInfo">Normal</div>
+            </div>
+
+            <div class="slotCard" data-slot="2">
+              <div class="slotTitle">Slot 2</div>
+              <div class="slotDot available" aria-hidden></div>
+              <div class="slotInfo">Normal</div>
+            </div>
+
+            <div class="slotCard" data-slot="EV">
+              <div class="slotTitle">EV</div>
+              <div class="slotDot ev available" aria-hidden></div>
+              <div class="slotInfo">EV (Charging)</div>
+            </div>
+          </div>
+
+          <div id="evChargeBlock" class="hidden">
+            <label>EV charging option</label>
+            <select id="evCharge">
+              <option value="">Select charging</option>
+              <option value="Slow">Slow — ₹5/hr</option>
+              <option value="Normal">Normal — ₹10/hr</option>
+              <option value="Fast">Fast — ₹20/hr</option>
+            </select>
+          </div>
+
+          <p class="muted">Click a green slot to assign it to one of your vehicles.</p>
+
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn primary" id="toPaymentBtn">Proceed to Payment</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 5 — Payment -->
+      <section id="page-payment" class="page">
+        <div class="card">
+          <h2>Payment</h2>
+          <div id="summaryBox" class="summaryBox"></div>
+
+          <label>Payment method</label>
+          <select id="paymentMethod">
+            <option value="">Select payment</option>
+            <option value="upi">UPI / QR</option>
+            <option value="card">Card</option>
+            <option value="wallet">Wallet</option>
+          </select>
+
+          <div id="paymentArea"></div>
+
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn primary" id="payAndBillBtn">Pay & Generate Bill</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 6 — Bill -->
+      <section id="page-bill" class="page">
+        <div class="card">
+          <h2>Bill & Ticket</h2>
+          <pre id="billText" class="billText"></pre>
+
+          <div class="ticketRow">
+            <div id="ticketIdBox" class="ticketIdBox"></div>
+            <canvas id="ticketQR" width="160" height="160"></canvas>
+          </div>
+
+          <div class="pager">
+            <button class="btn ghost" data-prev>Back</button>
+            <button class="btn" id="downloadTxtBtn">Download TXT</button>
+            <button class="btn" id="downloadPdfBtn">Download PDF</button>
+            <button class="btn primary" id="finishBtn">Finish & Home</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page 7 — Thank you -->
+      <section id="page-thanks" class="page">
+        <div class="card center">
+          <h2>Thank you!</h2>
+          <p>Your booking is confirmed. Safe drive 🚗</p>
+          <div class="actions">
+            <button id="backHome" class="btn primary">Back to Home</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- App script -->
+  <script src="script.js"></script>
+</body>
+</html>
+

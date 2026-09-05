@@ -1,0 +1,68 @@
+:root{
+  --bg-1:#001219;
+  --bg-2:#001e26;
+  --card: rgba(255,255,255,0.04);
+  --accent:#00ffd5;
+  --accent-2:#7afcff;
+  --muted: rgba(255,255,255,0.65);
+}
+*{box-sizing:border-box;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+html,body{height:100%;margin:0}
+body{
+  background: radial-gradient(circle at 10% 10%, var(--bg-2) 0%, var(--bg-1) 60%);
+  color:#e6ffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+.app{width:100%;max-width:980px}
+.steps{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
+.step{padding:6px 10px;border-radius:10px;background:rgba(255,255,255,0.02);color:var(--muted);font-size:0.9rem}
+.step.active{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#001; font-weight:600; box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+
+.pages{min-height:68vh}
+.page{display:none}
+.page.active{display:block;animation:fade .45s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.card{
+  background:var(--card);
+  padding:26px;border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.6)
+}
+.center{text-align:center}
+.brand{font-size:2.2rem;margin:0;color:var(--accent-2)}
+.tag{font-weight:600;color:var(--accent)}
+.lead{color:var(--muted);margin:12px 0 18px}
+
+input,select,textarea,pre{
+  width:100%;padding:10px;border-radius:10px;border:none;background:rgba(255,255,255,0.02);color:#e6ffff;margin:8px 0;outline:none;font-size:0.95rem;
+}
+.btn{padding:10px 14px;border-radius:8px;border:none;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#002b2b;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+.row{display:flex;gap:12px;align-items:center}
+.row label{min-width:140px;color:var(--muted)}
+
+.vehiclesContainer{display:flex;flex-direction:column;gap:12px}
+.vehicleBlock{background:rgba(0,0,0,0.18);padding:12px;border-radius:10px}
+
+.slotsGrid{display:flex;gap:14px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.slotCard{width:140px;background:rgba(255,255,255,0.02);padding:12px;border-radius:12px;text-align:center;cursor:pointer}
+.slotTitle{font-weight:700;margin-bottom:8px}
+.slotDot{width:18px;height:18px;border-radius:50%;margin:0 auto 8px;background:#94a3b8;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+.slotDot.available{background:#34d399}
+.slotDot.ev{background:#7c3aed}
+.slotCard.selected{box-shadow:0 0 0 6px rgba(122,252,255,0.06);transform:scale(1.04)}
+.slotCard.occupied{opacity:0.6;cursor:not-allowed}
+
+.hidden{display:none}
+.muted{color:var(--muted);font-size:0.95rem}
+.summaryBox{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;margin:8px 0}
+.billText{background:rgba(0,0,0,0.3);padding:12px;border-radius:8px;color:#dffcff;white-space:pre-wrap}
+.ticketRow{display:flex;gap:12px;align-items:center;margin-top:12px}
+.ticketIdBox{background:rgba(255,255,255,0.03);padding:8px;border-radius:8px;color:#eaffff}
+@media (max-width:700px){
+  .row{flex-direction:column;align-items:stretch}
+  .slotCard{width:120px}
+}
